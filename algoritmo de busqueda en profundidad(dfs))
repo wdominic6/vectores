@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+class Grafo {
+    int V; // Número de nodos
+    vector<vector<int>> adj; // Lista de adyacencia
+public:
+    Grafo(int V) : V(V), adj(V) {} // Inicializa el grafo con V nodos
+    void agregarArista(int v, int w) {
+        adj[v].push_back(w); //agregar una arista dirigida de v a w
+    }
+    // Función DFS recursiva
+    void DFS(int v, vector<bool>& visitado) {
+        visitado[v] = true;      // Marca el nodo como visitado
+        cout << v << " "; // Imprime el nodo usando letras
+        for (int vecino : adj[v]) { // Recorre todos los nodos adyacentes
+            if (!visitado[vecino]) // Si el nodo vecino no ha sido visitado
+                DFS(vecino, visitado); // Llama a DFS en el vecino
+        }
+    }
+    void iniciarDFS(int v) {
+        vector<bool> visitado(V, false); // Marca todos los nodos como no visitados
+        DFS(v, visitado); // Comienza DFS desde el nodo v
+    }
+};
+int main() {
+    Grafo g(6); // Crea un grafo con 6 nodos (A=0, B=1, C=2, D=3, E=4, F=5)
+    g.agregarArista(0, 1); // A -> B
+    g.agregarArista(0, 2); // A -> C
+    g.agregarArista(1, 3); // B -> D
+    g.agregarArista(2, 3); // C -> D
+    g.agregarArista(3, 2); // D -> C
+    g.agregarArista(1, 4); // B -> E
+    g.agregarArista(4, 5); // E -> F
+    g.agregarArista(3, 5); // D -> F
+    cout << "Recorrido DFS a partir del nodo A:\n";
+    g.iniciarDFS(0); // Inicia la DFS desde el nodo A (0)
+    return 0;
+}
